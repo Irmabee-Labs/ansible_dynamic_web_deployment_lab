@@ -1,0 +1,91 @@
+# Dynamic deployment_3_6:
+# Part A (localhost): run Terraform to build VM "web", read its IP, and add it to a dynamic Ansible group.
+# Part B (dynamic_hosts): SSH into the new VM and install nginx.
+# Part C (localhost): verify that nginx is reachable from the master using HTTP.
+
+- name: Part A - Provision VM "web" with Terraform
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # Adapt: directory containing your Terraform files (web.tf, etc.)
+    tf_dir: /home/ubuntu/week03
+
+    # Adapt: SSH user and private key used to reach the VM
+    ssh_user: ubuntu
+    ssh_private_key: "/home/ubuntu/.ssh/master"
+
+  tasks:
+    # Initialize Terraform (downloads providers/plugins)
+    - name: Terraform init
+      ansible.builtin.command: terraform init
+      args:
+        chdir: "{{ tf_dir }}"
+
+    # Apply Terraform (creates/updates the VM)
+    - name: Terraform apply (create VM web)
+      ansible.builtin.command: terraform apply -auto-approve
+      args:
+        chdir: "{{ tf_dir }}"
+
+    # Read VM IP from Terraform output.
+    # -raw prints the IP cleanly (no quotes)
+    - name: Get instance IP from Terraform output
+      ansible.builtin.command: terraform output -raw instance_ip_address
+      args:
+        chdir: "{{ tf_dir }}"
+      register: instance_ip_address
+
+    # Add the new VM to an in-memory group for this run (dynamic inventory)
+    - name: Add host to dynamic group
+      ansible.builtin.add_host:
+        name: "{{ instance_ip_address.stdout }}"
+        groups: dynamic_hosts
+        ansible_user: "{{ ssh_user }}"
+        ansible_ssh_private_key_file: "{{ ssh_private_key }}"
+        ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+
+    # Wait until SSH is available on the new VM
+    - name: Wait for SSH to become available
+      ansible.builtin.wait_for:
+        host: "{{ instance_ip_address.stdout }}"
+        port: 22
+        delay: 10
+        timeout: 300
+
+- name: Part B - Install nginx on the new VM
+  hosts: dynamic_hosts
+  become: true
+  tasks:
+    # Update package cache before installing packages
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    # Install nginx (idempotent)
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+
+    # Ensure nginx service is running and enabled on boot
+    - name: Ensure nginx is running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+- name: Part C - Verify nginx is reachable from the master
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    # Verify HTTP reachability from the master VM.
+    # This checks network routing + security group + nginx service.
+    - name: Test HTTP reachability from master (curl)
+      ansible.builtin.command: "curl -I http://{{ hostvars[groups['dynamic_hosts'][0]].inventory_hostname }}"
+      register: curl_result
+      changed_when: false
+
+    # Print the HTTP response headers (useful for documentation)
+    - name: Show HTTP response from nginx
+      ansible.builtin.debug:
+        var: curl_result.stdout_lines
