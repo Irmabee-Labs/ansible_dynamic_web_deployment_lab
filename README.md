@@ -1,123 +1,137 @@
-# ansible_dynamic_web_deployment_lab
+# 🚀 Dynamic Web Deployment with Terraform & Ansible
 
-Automated deployment of a webserver with Terraform and Ansible.
-# Dynamic Web Deployment with Terraform & Ansible
+## 📌 Overview
 
-## Overview
+This project demonstrates a fully automated workflow where infrastructure is provisioned and configured dynamically using **Terraform** and **Ansible**.
 
-This project demonstrates an automated end-to-end infrastructure and configuration workflow using **Terraform** and **Ansible**. A virtual machine is provisioned dynamically, configured via SSH, and validated through an HTTP check.
-
-The goal is to showcase practical skills in:
-
-* Infrastructure as Code (IaC)
-* Configuration management
-* Automated provisioning
-* Service validation and connectivity testing
+The deployment creates a VM, installs **Nginx**, and verifies connectivity — all in one execution.
 
 ---
 
-## Architecture
+## 🧱 Architecture Flow
 
-1. **Terraform** provisions a VM ("web") in the cloud
-2. The VM's public IP is retrieved dynamically
-3. **Ansible** uses dynamic inventory to connect via SSH
-4. **Nginx** is installed and started on the VM
-5. A final check verifies HTTP connectivity from the control node
-
----
-
-## Tech Stack
-
-* Terraform
-* Ansible
-* Linux (Ubuntu)
-* Nginx
-* SSH
+* 🟢 Terraform provisions a VM ("web")
+* 🌐 VM gets a private IP address
+* 🔐 Ansible connects via SSH (dynamic inventory)
+* ⚙️ Nginx is installed and started
+* ✅ HTTP request verifies the service is reachable
 
 ---
 
-## Project Structure
+## 🖼️ Deployment Proof
+
+### 🌐 Nginx Running in Browser
+
+![Nginx Welcome Page](image.png)
+
+---
+
+### 🧪 Ansible Execution Output
+
+This shows the full pipeline execution:
+
+* ✔️ Terraform init & apply
+* ✔️ VM created
+* ✔️ Dynamic host added
+* ✔️ Nginx installed
+* ✔️ HTTP 200 OK response verified
+
+*(Add your terminal screenshot here if desired)*
+<img width="1885" height="866" alt="image" src="https://github.com/user-attachments/assets/65751e7b-6a04-4425-aa7f-0c29a2cbabed" />
+
+<img width="1324" height="496" alt="image" src="https://github.com/user-attachments/assets/0569ed6d-be27-45e9-aeea-7d0b48be17ee" />
+
+
+
+---
+
+## 🛠️ Tech Stack
+
+* ⚙️ Terraform (Infrastructure as Code)
+* 🤖 Ansible (Configuration Management)
+* 🐧 Linux (Ubuntu)
+* 🌐 Nginx (Web Server)
+* 🔑 SSH (Remote Access)
+
+---
+
+## 📁 Project Structure
 
 ```
 .
 ├── dynamic_deployment_3_6.yml   # Ansible playbook
 ├── web_3_6.tf                  # Terraform configuration
+├── image.png                   # Nginx proof screenshot
 └── README.md
 ```
 
 ---
 
-## How It Works
+## ⚙️ How It Works
 
-### Part A – Provision Infrastructure
+### 🅰️ Part A – Provision Infrastructure
 
 * Runs `terraform init` and `terraform apply`
-* Creates a VM instance.
-* Extracts the instance IP using Terraform output.
-* Dynamically adds the host to Ansible inventory.
+* Creates a VM instance
+* Extracts IP using Terraform output
+* Adds VM to Ansible dynamic inventory
 
-### Part B – Configure VM
+### 🅱️ Part B – Configure VM
 
-* Connects to the VM via SSH.
-* Updates package cache.
-* Installs and starts Nginx.
+* Connects via SSH
+* Updates package cache
+* Installs and starts Nginx
 
-### Part C – Validation
+### 🅲 Part C – Validation
 
-* Executes a `curl` request from the control node.
-* Confirms HTTP response from the deployed web server.
-
----
-
-## Key Features
-
-* Dynamic inventory (no static host files).
-* Fully automated provisioning + configuration.
-* Idempotent configuration using Ansible.
-* Basic service health validation.
+* Executes `curl` from control node
+* Confirms HTTP response (`200 OK`)
 
 ---
 
-## Security Notes
+## 🌐 Networking Explanation
 
-* SSH private keys are not included in this repository.
-* Terraform state files are no included.
-* `StrictHostKeyChecking` is disabled for lab purposes only.
+* 📍 The VM is assigned a **private IP (10.x.x.x)**
+* 🔗 Access works because the client machine is on the **same internal network (VPN/university network)**
+* 🚫 The service is **not publicly exposed to the internet**
 
 ---
 
-## How to Run
+## 🔐 Security Notes
+
+* 🚫 SSH private keys are NOT stored in the repository,
+* 🚫 Terraform state files are not included.
+* ⚠️ `StrictHostKeyChecking=no` is used for lab purposes only
+
+---
+
+## ▶️ How to Run
 
 ```bash
-# Navigate to project
-cd ansible_dynamic_web_deployment_lab
-
-# Run Ansible playbook
 ansible-playbook dynamic_deployment_3_6.yml
 ```
 
 ---
 
-## Learning Outcomes
+## 🎯 Key Takeaways
 
-This project demonstrates:
-
-* Practical use of Terraform and Ansible together.
-* Understanding of provisioning vs configuration responsibilities.
-* Remote configuration over SSH.
-* Basic service validation and troubleshooting.
+* 🧠 Clear separation of provisioning vs configuration
+* 🔄 Dynamic infrastructure handling (no static inventory)
+* ⚡ End-to-end automation in one workflow
+* 🔍 Basic service validation using HTTP
 
 ---
 
-## Future Improvements
+## 🚀 Possible Improvements
 
-* Implement proper inventory management.
-* Add HTTPS with Let's Encrypt.
-* Improve security (host key verification, secrets handling)
+
+* 🔐 Improve SSH security (host key verification)
+* 
+  
+  
 
 ---
 
-## Author
+## 👤 Author
 
 Irma Beslic
-
