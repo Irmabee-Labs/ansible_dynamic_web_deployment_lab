@@ -36,7 +36,7 @@ This shows the full pipeline execution:
 * ✔️ Nginx installed
 * ✔️ HTTP 200 OK response verified
 
-*(Add your terminal screenshot here if desired)*
+*Terminal screenshot*
 <img width="1885" height="866" alt="image" src="https://github.com/user-attachments/assets/65751e7b-6a04-4425-aa7f-0c29a2cbabed" />
 
 
