@@ -22,7 +22,7 @@ The deployment creates a VM, installs **Nginx**, and verifies connectivity — a
 
 ### 🌐 Nginx Running in Browser
 
-![Nginx Welcome Page](<img width="1324" height="496" alt="image" src="https://github.com/user-attachments/assets/0569ed6d-be27-45e9-aeea-7d0b48be17ee" />)
+![Nginx Welcome Page] <img width="1324" height="496" alt="image" src="https://github.com/user-attachments/assets/0569ed6d-be27-45e9-aeea-7d0b48be17ee" />
 
 ---
 
