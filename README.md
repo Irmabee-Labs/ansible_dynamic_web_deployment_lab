@@ -22,7 +22,7 @@ The deployment creates a VM, installs **Nginx**, and verifies connectivity — a
 
 ### 🌐 Nginx Running in Browser
 
-![Nginx Welcome Page](image.png)
+![Nginx Welcome Page](<img width="1324" height="496" alt="image" src="https://github.com/user-attachments/assets/0569ed6d-be27-45e9-aeea-7d0b48be17ee" />)
 
 ---
 
@@ -39,7 +39,7 @@ This shows the full pipeline execution:
 *(Add your terminal screenshot here if desired)*
 <img width="1885" height="866" alt="image" src="https://github.com/user-attachments/assets/65751e7b-6a04-4425-aa7f-0c29a2cbabed" />
 
-<img width="1324" height="496" alt="image" src="https://github.com/user-attachments/assets/0569ed6d-be27-45e9-aeea-7d0b48be17ee" />
+
 
 
 
